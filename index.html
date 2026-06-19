@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FlexiLoans – Business Loans for SMEs</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #1a1a1a; background: #f5f6fa; line-height: 1.6; }
+
+    /* NAV */
+    .fl-nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 40px; background: #0A3D62; position: sticky; top: 0; z-index: 100; }
+    .fl-logo { font-size: 22px; font-weight: 600; color: #fff; letter-spacing: -0.3px; text-decoration: none; }
+    .fl-logo span { color: #FAC775; }
+    .fl-nav-links { display: flex; gap: 28px; }
+    .fl-nav-links a { font-size: 14px; color: rgba(255,255,255,0.8); text-decoration: none; }
+    .fl-nav-links a:hover { color: #fff; }
+    .fl-nav-btn { background: #FAC775; color: #0A3D62; font-size: 14px; font-weight: 600; padding: 9px 22px; border-radius: 8px; border: none; cursor: pointer; }
+    .fl-nav-btn:hover { background: #f0b84d; }
+
+    /* HERO */
+    .fl-hero { background: linear-gradient(135deg, #0A3D62 0%, #185FA5 100%); padding: 72px 40px 60px; }
+    .fl-hero-inner { max-width: 1100px; margin: 0 auto; }
+    .fl-hero h1 { font-size: 38px; font-weight: 700; color: #fff; line-height: 1.3; max-width: 560px; margin-bottom: 16px; }
+    .fl-hero p { font-size: 16px; color: rgba(255,255,255,0.75); max-width: 500px; margin-bottom: 32px; }
+    .fl-hero-btns { display: flex; gap: 14px; flex-wrap: wrap; }
+    .fl-btn-primary { background: #FAC775; color: #0A3D62; font-size: 15px; font-weight: 600; padding: 13px 28px; border-radius: 8px; border: none; cursor: pointer; }
+    .fl-btn-primary:hover { background: #f0b84d; }
+    .fl-btn-outline { background: transparent; color: #fff; font-size: 15px; padding: 13px 28px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.4); cursor: pointer; }
+    .fl-btn-outline:hover { border-color: #fff; }
+    .fl-hero-stats { display: flex; gap: 48px; margin-top: 48px; flex-wrap: wrap; }
+    .fl-stat label { font-size: 11px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.8px; }
+    .fl-stat p { font-size: 26px; font-weight: 700; color: #FAC775; margin-top: 2px; }
+
+    /* CONTAINER */
+    .fl-container { max-width: 1100px; margin: 0 auto; padding: 0 40px; }
+    .fl-section { padding: 60px 0; }
+    .fl-section-title { font-size: 26px; font-weight: 700; color: #0A3D62; margin-bottom: 8px; }
+    .fl-section-sub { font-size: 15px; color: #666; margin-bottom: 36px; }
+
+    /* CALCULATOR */
+    .fl-calc-wrap { background: #fff; border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); padding: 36px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+    .fl-calc-wrap label { font-size: 13px; color: #666; display: block; margin-bottom: 6px; }
+    .fl-val-display { font-size: 20px; font-weight: 700; color: #0A3D62; margin-bottom: 10px; }
+    input[type=range] { width: 100%; accent-color: #0A3D62; }
+    .fl-range-labels { display: flex; justify-content: space-between; font-size: 11px; color: #aaa; margin-top: 4px; margin-bottom: 18px; }
+    .fl-emi-box { background: linear-gradient(135deg, #0A3D62, #185FA5); border-radius: 12px; padding: 28px; text-align: center; color: #fff; }
+    .fl-emi-box .emi-label { font-size: 12px; color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px; }
+    .fl-emi-box .emi-val { font-size: 40px; font-weight: 700; color: #FAC775; }
+    .fl-emi-box .emi-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 4px; }
+    .fl-breakdown { margin-top: 20px; background: #f5f6fa; border-radius: 10px; padding: 18px; font-size: 14px; }
+    .fl-breakdown-row { display: flex; justify-content: space-between; padding: 6px 0; }
+    .fl-breakdown-row:not(:last-child) { border-bottom: 1px solid #eee; }
+    .fl-breakdown-row span:first-child { color: #888; }
+    .fl-breakdown-row span:last-child { font-weight: 600; }
+    .fl-apply-btn { width: 100%; margin-top: 20px; background: #0A3D62; color: #fff; font-size: 15px; font-weight: 600; padding: 14px; border-radius: 8px; border: none; cursor: pointer; }
+    .fl-apply-btn:hover { background: #083251; }
+
+    /* PRODUCTS */
+    .fl-bg-light { background: #f5f6fa; }
+    .fl-product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 18px; }
+    .fl-product-card { background: #fff; border: 1px solid #e8edf3; border-radius: 14px; padding: 24px 20px; cursor: pointer; transition: box-shadow 0.2s, transform 0.2s; }
+    .fl-product-card:hover { box-shadow: 0 8px 28px rgba(10,61,98,0.12); transform: translateY(-2px); }
+    .fl-product-icon { width: 48px; height: 48px; border-radius: 12px; background: #E6F1FB; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .fl-product-icon i { font-size: 24px; color: #185FA5; }
+    .fl-product-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .fl-product-card p { font-size: 13px; color: #777; line-height: 1.5; }
+    .fl-product-card .fl-rate { font-size: 14px; font-weight: 600; color: #185FA5; margin-top: 12px; }
+    .fl-product-card .fl-tag { display: inline-block; font-size: 11px; background: #E6F1FB; color: #185FA5; padding: 2px 8px; border-radius: 20px; margin-top: 6px; }
+
+    /* FEATURES */
+    .fl-feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; }
+    .fl-feat { display: flex; align-items: flex-start; gap: 14px; }
+    .fl-feat-icon { width: 44px; height: 44px; min-width: 44px; border-radius: 12px; background: #E6F1FB; display: flex; align-items: center; justify-content: center; }
+    .fl-feat-icon i { font-size: 22px; color: #185FA5; }
+    .fl-feat h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: #0A3D62; }
+    .fl-feat p { font-size: 13px; color: #777; line-height: 1.5; }
+
+    /* ELIGIBILITY */
+    .fl-elig-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .fl-elig-item { background: #fff; border: 1px solid #e8edf3; border-radius: 12px; padding: 20px; display: flex; align-items: center; gap: 14px; }
+    .fl-elig-item .elig-icon { width: 44px; height: 44px; min-width: 44px; border-radius: 10px; background: #E6F1FB; display: flex; align-items: center; justify-content: center; }
+    .fl-elig-item .elig-icon i { font-size: 22px; color: #185FA5; }
+    .fl-elig-item p { font-size: 14px; font-weight: 600; color: #0A3D62; }
+    .fl-elig-item span { font-size: 13px; color: #888; }
+
+    /* PROCESS */
+    .fl-steps { display: flex; align-items: flex-start; gap: 0; }
+    .fl-step { flex: 1; text-align: center; position: relative; padding: 0 10px; }
+    .fl-step:not(:last-child)::after { content: ''; position: absolute; top: 22px; left: 58%; width: 84%; height: 2px; background: #B5D4F4; z-index: 0; }
+    .fl-step-num { width: 44px; height: 44px; background: #0A3D62; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; margin: 0 auto 12px; position: relative; z-index: 1; }
+    .fl-step h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; color: #0A3D62; }
+    .fl-step p { font-size: 13px; color: #777; }
+
+    /* TESTIMONIALS */
+    .fl-testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .fl-testi-card { background: #fff; border: 1px solid #e8edf3; border-radius: 14px; padding: 24px; }
+    .fl-stars { color: #EF9F27; font-size: 16px; margin-bottom: 10px; }
+    .fl-testi-card p { font-size: 14px; color: #555; line-height: 1.65; margin-bottom: 18px; font-style: italic; }
+    .fl-testi-user { display: flex; align-items: center; gap: 12px; }
+    .fl-avatar { width: 40px; height: 40px; border-radius: 50%; background: #E6F1FB; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #185FA5; }
+    .fl-testi-user strong { font-size: 14px; display: block; color: #0A3D62; }
+    .fl-testi-user span { font-size: 12px; color: #999; }
+
+    /* CTA BANNER */
+    .fl-cta-banner { background: linear-gradient(135deg, #0A3D62, #185FA5); border-radius: 16px; padding: 48px 40px; text-align: center; }
+    .fl-cta-banner h2 { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .fl-cta-banner p { font-size: 16px; color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+    .fl-cta-banner button { background: #FAC775; color: #0A3D62; font-size: 15px; font-weight: 700; padding: 14px 32px; border-radius: 8px; border: none; cursor: pointer; margin: 0 8px; }
+    .fl-cta-banner button:hover { background: #f0b84d; }
+
+    /* FOOTER */
+    footer { background: #0A3D62; padding: 48px 40px 24px; margin-top: 60px; }
+    .fl-footer-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.8fr 1fr 1fr 1fr; gap: 40px; }
+    .fl-footer-brand p { font-size: 13px; color: rgba(255,255,255,0.5); margin-top: 10px; line-height: 1.7; }
+    footer h4 { font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.8); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
+    footer ul { list-style: none; }
+    footer ul li { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 9px; cursor: pointer; }
+    footer ul li:hover { color: rgba(255,255,255,0.85); }
+    .fl-footer-logo { font-size: 22px; font-weight: 700; color: #fff; }
+    .fl-footer-logo span { color: #FAC775; }
+    .fl-footer-copy { max-width: 1100px; margin: 0 auto; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; margin-top: 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .fl-footer-copy p { font-size: 12px; color: rgba(255,255,255,0.4); }
+    .fl-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+    .fl-badge { font-size: 11px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); padding: 4px 10px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.15); }
+
+    @media (max-width: 768px) {
+      .fl-nav-links { display: none; }
+      .fl-hero h1 { font-size: 26px; }
+      .fl-calc-wrap { grid-template-columns: 1fr; }
+      .fl-steps { flex-direction: column; gap: 20px; align-items: center; }
+      .fl-step:not(:last-child)::after { display: none; }
+      .fl-footer-inner { grid-template-columns: 1fr 1fr; }
+      .fl-container { padding: 0 20px; }
+      .fl-hero { padding: 48px 20px 40px; }
+      footer { padding: 40px 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="fl-nav">
+  <a href="#" class="fl-logo">Flexi<span>Loans</span></a>
+  <div class="fl-nav-links">
+    <a href="#products">Products</a>
+    <a href="#eligibility">Eligibility</a>
+    <a href="#how-it-works">How It Works</a>
+    <a href="#testimonials">Reviews</a>
+    <a href="#">About</a>
+  </div>
+  <button class="fl-nav-btn" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Apply Now</button>
+</nav>
+
+<!-- HERO -->
+<section class="fl-hero">
+  <div class="fl-hero-inner">
+    <h1>Business loans tailored for your growth</h1>
+    <p>Get collateral-free loans up to ₹1 Crore with minimal documentation and approval in 48 hours.</p>
+    <div class="fl-hero-btns">
+      <button class="fl-btn-primary" onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Check Eligibility</button>
+      <button class="fl-btn-outline" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Products</button>
+    </div>
+    <div class="fl-hero-stats">
+      <div class="fl-stat"><label>Loans Disbursed</label><p>₹3,500 Cr+</p></div>
+      <div class="fl-stat"><label>Happy Customers</label><p>1,00,000+</p></div>
+      <div class="fl-stat"><label>Cities Covered</label><p>90+</p></div>
+      <div class="fl-stat"><label>Approval Time</label><p>48 hrs</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section class="fl-section" id="calculator">
+  <div class="fl-container">
+    <div class="fl-section-title">EMI Calculator</div>
+    <div class="fl-section-sub">Estimate your monthly repayment instantly</div>
+    <div class="fl-calc-wrap">
+      <div>
+        <label>Loan Amount</label>
+        <div class="fl-val-display" id="amtVal">₹10,00,000</div>
+        <input type="range" min="100000" max="10000000" step="50000" value="1000000" id="amtSlider" />
+        <div class="fl-range-labels"><span>₹1 Lakh</span><span>₹1 Crore</span></div>
+
+        <label>Loan Tenure</label>
+        <div class="fl-val-display" id="tenureVal">24 months</div>
+        <input type="range" min="3" max="36" step="1" value="24" id="tenureSlider" />
+        <div class="fl-range-labels"><span>3 months</span><span>36 months</span></div>
+
+        <label>Interest Rate (% per annum)</label>
+        <div class="fl-val-display" id="rateVal">18.0%</div>
+        <input type="range" min="12" max="28" step="0.5" value="18" id="rateSlider" />
+        <div class="fl-range-labels"><span>12%</span><span>28%</span></div>
+      </div>
+      <div>
+        <div class="fl-emi-box">
+          <div class="emi-label">Monthly EMI</div>
+          <div class="emi-val" id="emiVal">₹49,924</div>
+          <div class="emi-sub">per month</div>
+        </div>
+        <div class="fl-breakdown">
+          <div class="fl-breakdown-row">
+            <span>Principal Amount</span>
+            <span id="principalOut">₹10,00,000</span>
+          </div>
+          <div class="fl-breakdown-row">
+            <span>Total Interest</span>
+            <span id="interestOut" style="color:#185FA5;">₹1,98,176</span>
+          </div>
+          <div class="fl-breakdown-row">
+            <span>Total Payable</span>
+            <span id="totalOut">₹11,98,176</span>
+          </div>
+        </div>
+        <button class="fl-apply-btn">Apply for This Loan</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="fl-section fl-bg-light" id="products">
+  <div class="fl-container">
+    <div class="fl-section-title">Loan Products</div>
+    <div class="fl-section-sub">Choose the right product for your business needs</div>
+    <div class="fl-product-grid">
+      <div class="fl-product-card">
+        <div class="fl-product-icon"><i class="ti ti-building-store"></i></div>
+        <h3>Business Loan</h3>
+        <p>Working capital, expansion, or equipment purchase for your business</p>
+        <div class="fl-rate">From 18% p.a.</div>
+        <div class="fl-tag">Up to ₹1 Crore</div>
+      </div>
+      <div class="fl-product-card">
+        <div class="fl-product-icon"><i class="ti ti-coin"></i></div>
+        <h3>Top-Up Loan</h3>
+        <p>Additional funds on your existing FlexiLoans loan without fresh paperwork</p>
+        <div class="fl-rate">From 16% p.a.</div>
+        <div class="fl-tag">Existing customers</div>
+      </div>
+      <div class="fl-product-card">
+        <div class="fl-product-icon"><i class="ti ti-file-invoice"></i></div>
+        <h3>Invoice Financing</h3>
+        <p>Get immediate funds against your pending invoices and receivables</p>
+        <div class="fl-rate">From 15% p.a.</div>
+        <div class="fl-tag">B2B businesses</div>
+      </div>
+      <div class="fl-product-card">
+        <div class="fl-product-icon"><i class="ti ti-credit-card"></i></div>
+        <h3>Overdraft / DLOD</h3>
+        <p>Revolving credit line for day-to-day operational cash needs</p>
+        <div class="fl-rate">From 17% p.a.</div>
+        <div class="fl-tag">Flexible withdrawal</div>
+      </div>
+      <div class="fl-product-card">
+        <div class="fl-product-icon"><i class="ti ti-home"></i></div>
+        <h3>Loan Against Property</h3>
+        <p>Leverage your commercial or residential property for large-ticket loans</p>
+        <div class="fl-rate">From 12% p.a.</div>
+        <div class="fl-tag">Up to ₹5 Crore</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-section-title">Why FlexiLoans?</div>
+    <div class="fl-section-sub">Built for India's small and medium businesses</div>
+    <div class="fl-feat-grid">
+      <div class="fl-feat">
+        <div class="fl-feat-icon"><i class="ti ti-bolt"></i></div>
+        <div><h4>Fast disbursal</h4><p>Loan approved and disbursed within 48 hours of application</p></div>
+      </div>
+      <div class="fl-feat">
+        <div class="fl-feat-icon"><i class="ti ti-shield-check"></i></div>
+        <div><h4>No collateral</h4><p>Fully unsecured business loans — no property or asset pledge needed</p></div>
+      </div>
+      <div class="fl-feat">
+        <div class="fl-feat-icon"><i class="ti ti-file-text"></i></div>
+        <div><h4>Minimal documentation</h4><p>Just GST returns, 6-month bank statements, and PAN card</p></div>
+      </div>
+      <div class="fl-feat">
+        <div class="fl-feat-icon"><i class="ti ti-adjustments"></i></div>
+        <div><h4>Flexible tenure</h4><p>Choose a repayment period between 3 months and 36 months</p></div>
+      </div>
+      <div class="fl-feat">
+        <div class="fl-feat-icon"><i class="ti ti-device-mobile"></i></div>
+        <div><h4>100% online process</h4><p>Apply from anywhere — no branch visit, no physical paperwork</p></div>
+      </div>
+      <div class="fl-feat">
+        <div class="fl-feat-icon"><i class="ti ti-headset"></i></div>
+        <div><h4>Dedicated support</h4><p>A relationship manager is assigned to handle your loan journey</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ELIGIBILITY -->
+<section class="fl-section fl-bg-light" id="eligibility">
+  <div class="fl-container">
+    <div class="fl-section-title">Eligibility Criteria</div>
+    <div class="fl-section-sub">Check if your business qualifies for a FlexiLoan</div>
+    <div class="fl-elig-grid">
+      <div class="fl-elig-item">
+        <div class="elig-icon"><i class="ti ti-calendar"></i></div>
+        <div><p>Business Vintage</p><span>Minimum 2 years in operation</span></div>
+      </div>
+      <div class="fl-elig-item">
+        <div class="elig-icon"><i class="ti ti-chart-bar"></i></div>
+        <div><p>Annual Turnover</p><span>₹30 Lakh and above</span></div>
+      </div>
+      <div class="fl-elig-item">
+        <div class="elig-icon"><i class="ti ti-map-pin"></i></div>
+        <div><p>Location</p><span>90+ cities across India</span></div>
+      </div>
+      <div class="fl-elig-item">
+        <div class="elig-icon"><i class="ti ti-user-check"></i></div>
+        <div><p>Applicant Age</p><span>21 to 65 years</span></div>
+      </div>
+      <div class="fl-elig-item">
+        <div class="elig-icon"><i class="ti ti-star"></i></div>
+        <div><p>CIBIL Score</p><span>650 and above preferred</span></div>
+      </div>
+      <div class="fl-elig-item">
+        <div class="elig-icon"><i class="ti ti-receipt"></i></div>
+        <div><p>GST Registration</p><span>Valid GSTIN mandatory</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="fl-section" id="how-it-works">
+  <div class="fl-container">
+    <div class="fl-section-title">How It Works</div>
+    <div class="fl-section-sub">Get your loan in four simple steps</div>
+    <div class="fl-steps">
+      <div class="fl-step">
+        <div class="fl-step-num">1</div>
+        <h4>Apply Online</h4>
+        <p>Fill the short application form in under 5 minutes</p>
+      </div>
+      <div class="fl-step">
+        <div class="fl-step-num">2</div>
+        <h4>Submit Documents</h4>
+        <p>Upload GST returns and bank statements digitally</p>
+      </div>
+      <div class="fl-step">
+        <div class="fl-step-num">3</div>
+        <h4>Get Approved</h4>
+        <p>Our credit team reviews and approves your loan fast</p>
+      </div>
+      <div class="fl-step">
+        <div class="fl-step-num">4</div>
+        <h4>Receive Funds</h4>
+        <p>Money credited to your bank account within 48 hours</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="fl-section fl-bg-light" id="testimonials">
+  <div class="fl-container">
+    <div class="fl-section-title">What Our Customers Say</div>
+    <div class="fl-section-sub">Trusted by over 1,00,000 businesses across India</div>
+    <div class="fl-testi-grid">
+      <div class="fl-testi-card">
+        <div class="fl-stars">★★★★★</div>
+        <p>"Got my ₹20 Lakh loan approved within 2 days. The process was completely online and incredibly smooth. No branch visits, no hassle."</p>
+        <div class="fl-testi-user">
+          <div class="fl-avatar">RP</div>
+          <div><strong>Ramesh Patil</strong><span>Retail Business, Pune</span></div>
+        </div>
+      </div>
+      <div class="fl-testi-card">
+        <div class="fl-stars">★★★★★</div>
+        <p>"FlexiLoans helped me expand my restaurant when no bank would. Minimal documents, fast approval, and a helpful relationship manager."</p>
+        <div class="fl-testi-user">
+          <div class="fl-avatar">SK</div>
+          <div><strong>Sunita Kapoor</strong><span>F&B Owner, Delhi</span></div>
+        </div>
+      </div>
+      <div class="fl-testi-card">
+        <div class="fl-stars">★★★★☆</div>
+        <p>"The EMI schedule is flexible and the interest rate was reasonable for an unsecured loan. I'd recommend FlexiLoans to any SME owner."</p>
+        <div class="fl-testi-user">
+          <div class="fl-avatar">AM</div>
+          <div><strong>Amit Mehta</strong><span>Manufacturer, Surat</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="fl-section">
+  <div class="fl-container">
+    <div class="fl-cta-banner">
+      <h2>Ready to grow your business?</h2>
+      <p>Apply today and get funds in your account within 48 hours</p>
+      <button onclick="document.getElementById('calculator').scrollIntoView({behavior:'smooth'})">Apply Now</button>
+      <button style="background:transparent;color:#FAC775;border:2px solid #FAC775;" onclick="alert('Our team will contact you shortly!')">Talk to Us</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fl-footer-inner">
+    <div class="fl-footer-brand">
+      <div class="fl-footer-logo">Flexi<span>Loans</span></div>
+      <p>India's leading digital lending platform for SMEs and MSMEs. We help businesses grow with quick, collateral-free loans.</p>
+    </div>
+    <div>
+      <h4>Products</h4>
+      <ul>
+        <li>Business Loan</li>
+        <li>Top-Up Loan</li>
+        <li>Invoice Financing</li>
+        <li>Overdraft / DLOD</li>
+        <li>Loan Against Property</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Company</h4>
+      <ul>
+        <li>About Us</li>
+        <li>Careers</li>
+        <li>Blog</li>
+        <li>Partner With Us</li>
+        <li>Press</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Support</h4>
+      <ul>
+        <li>Contact Us</li>
+        <li>FAQs</li>
+        <li>Grievance Redressal</li>
+        <li>Privacy Policy</li>
+        <li>Terms of Use</li>
+      </ul>
+    </div>
+  </div>
+  <div class="fl-footer-copy">
+    <p>© 2025 FlexiLoans Technologies Pvt. Ltd. All rights reserved. | NBFC registered with RBI</p>
+    <div class="fl-badges">
+      <span class="fl-badge">RBI Registered NBFC</span>
+      <span class="fl-badge">ISO 27001</span>
+      <span class="fl-badge">SSL Secured</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function fmt(n) {
+    if (n >= 10000000) return '₹' + (n / 10000000).toFixed(1) + ' Cr';
+    if (n >= 100000) return '₹' + (n / 100000).toFixed(1) + ' L';
+    return '₹' + n.toLocaleString('en-IN');
+  }
+
+  function calcEMI() {
+    const P = +document.getElementById('amtSlider').value;
+    const n = +document.getElementById('tenureSlider').value;
+    const r = +document.getElementById('rateSlider').value / 12 / 100;
+    const emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+    const total = emi * n;
+    const interest = total - P;
+
+    document.getElementById('amtVal').textContent = fmt(P);
+    document.getElementById('tenureVal').textContent = n + ' months';
+    document.getElementById('rateVal').textContent = (+document.getElementById('rateSlider').value).toFixed(1) + '%';
+    document.getElementById('emiVal').textContent = '₹' + Math.round(emi).toLocaleString('en-IN');
+    document.getElementById('principalOut').textContent = fmt(P);
+    document.getElementById('interestOut').textContent = '₹' + Math.round(interest).toLocaleString('en-IN');
+    document.getElementById('totalOut').textContent = '₹' + Math.round(total).toLocaleString('en-IN');
+  }
+
+  document.getElementById('amtSlider').addEventListener('input', calcEMI);
+  document.getElementById('tenureSlider').addEventListener('input', calcEMI);
+  document.getElementById('rateSlider').addEventListener('input', calcEMI);
+  calcEMI();
+</script>
+</body>
+</html>
